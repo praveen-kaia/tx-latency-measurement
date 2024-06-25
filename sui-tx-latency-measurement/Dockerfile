@@ -1,6 +1,6 @@
 FROM node:16
 
-WORKDIR /usr/src/klaytn
+WORKDIR /usr/src/sui
 
 COPY . .
 

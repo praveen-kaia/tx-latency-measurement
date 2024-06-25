@@ -1,4 +1,4 @@
-// Klaytn transaction latency measurement.
+// Kaia transaction latency measurement.
 // Reference of Sending Transaction using CaverJS: https://docs.kaikas.io/02_api_reference/02_caver_methods
 const fs = require('fs')
 const Caver = require('caver-js')
@@ -42,7 +42,7 @@ async function uploadToGCS(data) {
     });
 
     const filename = await makeParquetFile(data)
-    const destFileName = `tx-latency-measurement/klaytn/${filename}`;
+    const destFileName = `tx-latency-measurement/kaia/${filename}`;
 
     async function uploadFile() {
         const options = {
@@ -186,7 +186,7 @@ async function sendTx() {
         const start = new Date().getTime()
         data.startTime = start
 
-        // Send transaction to the Klaytn blockchain platform (Klaytn)
+        // Send transaction to the Kaia blockchain platform (Kaia)
         const receipt = await caver.rpc.klay.sendRawTransaction(signed)
         const end = new Date().getTime()
 
@@ -207,13 +207,13 @@ async function sendTx() {
         try{
             await uploadChoice(data)
         } catch(err){
-            await sendSlackMsg(`failed to upload Klaytn, ${err.toString()}`);
+            await sendSlackMsg(`failed to upload Kaia, ${err.toString()}`);
             console.log(`failed to ${process.env.UPLOAD_METHOD === 'AWS'? 's3': 'gcs'}.upload!! Printing instead!`, err.toString())
             console.log(JSON.stringify(data))
         }
     } catch (err) {
          const now = new Date();
-        await sendSlackMsg(`${now}, failed to execute Klaytn, ${err.toString()}, ${err.stack}`);
+        await sendSlackMsg(`${now}, failed to execute Kaia, ${err.toString()}, ${err.stack}`);
         console.log("failed to execute.", err.toString(), err.stack)
         data.error = err.toString()
         console.log(`${data.executedAt},${data.chainId},${data.txhash},${data.startTime},${data.endTime},${data.latency},${data.txFee},${data.txFeeInUSD},${data.resourceUsedOfLatestBlock},${data.numOfTxInLatestBlock},${data.pingTime},${data.error}`)
@@ -229,7 +229,7 @@ async function main() {
         const keyring = caver.wallet.keyring.generate()
         console.log(`Private key is not defined. Use this new private key(${keyring.key.privateKey}).`)
         console.log(`Get test KLAY from the faucet: https://baobab.wallet.klaytn.foundation/faucet`)
-        console.log(`Your Klaytn address = ${keyring.address}`)
+        console.log(`Your Kaia address = ${keyring.address}`)
         return
     }
 
